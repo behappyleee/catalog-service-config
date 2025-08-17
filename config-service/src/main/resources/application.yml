@@ -5,8 +5,11 @@ spring:
     config:
       server:
         git:
-          uri:
+          uri: https://github.com/behappyleee/catalog-service-config
           default-label: main
+          clone-on-start: true
+          force-pull: true
+          timeout: 5
 
 server:
   port: 8888
