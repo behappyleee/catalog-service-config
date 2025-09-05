@@ -63,38 +63,17 @@ services:
       - POSTGRES_PASSWORD=password
     volumes:
       - ./docker/postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
-
-# version: "3.8"
-# services:
-#   # Applications
-#   catalog-service:
-#     depends_on:
-#       - polar-postgres
-#     image: "catalog-service"
-#     container_name: "catalog-service"
-#     ports:
-#       - 9001:9001
-#       - 8001:8001
-#     environment:
-#       - BPL_JVM_THREAD_COUNT=50
-#       - BPL_DEBUG_ENABLED=true
-#       - BPL_DEBUG_PORT=8001
-#       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog
-#       - SPRING_PROFILES_ACTIVE=testdata
-#     volumes:
-#       - ./docker/postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-#       - pgdata:/var/lib/postgresql/data
-#       # ✅ init.sql은 postgres 컨테이너에 마운트
-#       # (선택) 데이터 영속화를 원하면 아래 네임드 볼륨 사용
-#       # - ./polar_deployment/docker/postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
-
-#   polar-postgres:
-#     image: "postgres:14.4"
-#     container_name: "polar-postgres"
-#     ports:
-#       - 5432:5432
-#     environment:
-#       - POSTGRES_USER=user
-#       - POSTGRES_PASSWORD=password
-#       - POSTGRES_DB=polardb_catalog
+  polar-redis:
+    image: "redis:7.0"
+    container_name: "polar-redis"
+    ports:
+     - 6379:6379    
+  polar-rabbitmq:
+    image: rabbitmq:3.10-management
+    container_name: polar-rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
